@@ -5,24 +5,31 @@
     <div class="codeWrap">
       <input type="number" v-model="codeLength" placeholder="length (3-10)" @change="generateCode" />
       <div class="codeWrap" v-if="code">
-        <button class="reveal" @click="userGuess = code">{{ showCode ? 'Hide Code' : 'Reveal Code' }}</button>
+        <button class="reveal" @click="userGuess = code">{{ showCode ? 'Hide Code' : 'Show Code' }}</button>
         <p v-if="showCode" class="win">{{ code }}</p>
       </div>
     </div>
-    <div v-if="code">
-      <div class="codeContainer">
-        
+    <div v-if="code" class="guessWrap">
+      <div>
         <input type="text" v-model="userGuess" placeholder="Enter guess" @keyup.enter="checkGuess" />
         <button class="guess" @click="checkGuess">Guess</button>
       </div>
-      <div v-if="guesses.length > 0">
+      <div class="guessContainer" v-if="guesses.length > 0">
         <table>
           <tr>
             <th>Guess</th>
-            <th>Correct Numbers</th>
+            <th>Correct # Count</th>
           </tr>
           <tr v-for="(guess, index) in guesses" :key="index">
-            <td>{{ guess.text }}</td>
+            <td>
+              <span v-for="(digit, dIndex) in guess.text.split('')" :key="dIndex">
+                <span class="digit" :style="{ backgroundColor: guess.colors[dIndex] }"
+                  @click="cycleColor(index, dIndex)">
+                  {{ digit }}
+                </span>
+                <span v-if="dIndex < guess.text.length - 1"> - </span>
+              </span>
+            </td>
             <td :class="guess.correctCount > 0 ? 'correct' : ''">{{ guess.correctCount }}</td>
           </tr>
         </table>
@@ -70,7 +77,11 @@ export default {
           correctCount++;
         }
       }
-      this.guesses.push({ text: this.userGuess, correctCount: correctCount });
+      this.guesses.push({
+        text: this.userGuess,
+        correctCount: correctCount,
+        colors: Array(this.userGuess.length).fill('none') // Initialize colors as 'none'
+});
       this.userGuess = ''; // Reset guess input
 
       // Check if all digits were guessed correctly
@@ -83,6 +94,12 @@ export default {
       this.generateCode();
       this.guesses = [];
       this.guessedCorrectly = false;
+    },
+    cycleColor(guessIndex, digitIndex) {
+      const colors = ['#FF6A60', '#F7D038', '#429128', 'transparent'];
+      let currentColorIndex = colors.indexOf(this.guesses[guessIndex].colors[digitIndex]);
+      let nextColorIndex = (currentColorIndex + 1) % colors.length;
+      this.guesses[guessIndex].colors[digitIndex] = colors[nextColorIndex];
     }
   }
 }
@@ -108,9 +125,11 @@ input, button {
 input{
   max-width: 150px;
 }
-.codeContainer{
-  display: flex;
-  align-items: center;
+.guessWrap{
+  width: 100%;
+}
+.guessContainer{
+  width: 100%;
 }
 .codeWrap {
   display: flex;
@@ -176,13 +195,19 @@ th {
 tr:last-child td {
   border-bottom: none; /* Remove bottom border from the last row */
 }
-
+.digit{
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .correct {
   color: #429128; /* Green color for correct count */
   font-weight: bold;
 }
 .regen{
-  margin: auto;
+  margin: 0 auto;
+  margin-top: 12px;
 }
 
 
