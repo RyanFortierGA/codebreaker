@@ -85,11 +85,16 @@ export default {
 body{
   margin: 0px;
   padding: 0px;
+  overflow-x: hidden;
+}
+html{
+  overflow-x: hidden;
 }
 /* Existing styles */
 input, button {
   margin: 10px;
   padding: 8px;
+  font-size: 16px;
 }
 .codeContainer{
   display: flex;
@@ -127,6 +132,7 @@ li:last-child {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 button {
