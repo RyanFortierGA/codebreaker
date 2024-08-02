@@ -21,7 +21,7 @@
         </li>
       </ul>
       <div v-if="guessedCorrectly">
-       <p class="win">Congratulations! You've guessed the code correctly.</p>
+       <p class="win">Congratulations! You got it in {{ guesses.length }} tries.</p>
       </div>
     </div>
     <button v-if="code" @click="regenerateCode" class="regen">Regenerate Code</button>
@@ -86,9 +86,11 @@ body{
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
+  background-color: #E0F7FA; /* Baby blue background */
 }
 html{
   overflow-x: hidden;
+  background-color: #E0F7FA; /* Baby blue background */
 }
 /* Existing styles */
 input, button {
