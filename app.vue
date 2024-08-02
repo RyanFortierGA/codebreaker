@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Codebreaker Game</h1>
+    <h1>Codebreaker</h1>
     <h4>Enter a code length between 3 and 10</h4>
     <div class="codeWrap">
       <input type="number" v-model="codeLength" placeholder="length (3-10)" @change="generateCode" />
@@ -11,8 +11,11 @@
     </div>
     <div v-if="code" class="guessWrap">
       <div>
-        <input type="text" v-model="userGuess" placeholder="Enter guess" @keyup.enter="checkGuess" />
-        <button class="guess" @click="checkGuess">Guess</button>
+        <h4>Enter your {{ codeLength }} digit guess</h4>
+        <div class="codeWrap">
+          <input type="text" v-model="userGuess" placeholder="Enter guess" @keyup.enter="checkGuess" />
+          <button class="guess" @click="checkGuess">Guess</button>
+        </div>
       </div>
       <div class="guessContainer" v-if="guesses.length > 0">
         <table>
@@ -22,12 +25,11 @@
           </tr>
           <tr v-for="(guess, index) in guesses" :key="index">
             <td>
-              <span v-for="(digit, dIndex) in guess.text.split('')" :key="dIndex">
-                <span class="digit" :style="{ backgroundColor: guess.colors[dIndex] }"
-                  @click="cycleColor(index, dIndex)">
+              <span v-for="(digit, dIndex) in guess.text.split('')" :key="dIndex" class="digit-group">
+                <span :class="['digit', dIndex > 3 ? 'mbDigit' : '']" :style="{ backgroundColor: guess.colors[dIndex] }" @click="cycleColor(index, dIndex)">
                   {{ digit }}
                 </span>
-                <span v-if="dIndex < guess.text.length - 1"> - </span>
+                <span v-if="dIndex < guess.text.length - 1" class="separator">-</span>
               </span>
             </td>
             <td :class="guess.correctCount > 0 ? 'correct' : ''">{{ guess.correctCount }}</td>
@@ -133,19 +135,41 @@ body{
   padding: 0px;
   overflow-x: hidden;
   background-color: #E0F7FA; /* Baby blue background */
+  font-family: 'Arial', sans-serif;
 }
 html{
   overflow-x: hidden;
   background-color: #E0F7FA; /* Baby blue background */
+}
+h1{
+  animation: rainbowAnimation 20s infinite;
+  
+}
+@keyframes rainbowAnimation {
+    0% { color: rgb(248, 119, 119); }
+    17% { color: rgb(255, 188, 62); }
+    34% { color: rgb(110, 110, 20); }
+    51% { color: rgb(57, 217, 57); }
+    68% { color: rgb(91, 172, 188); }
+    85% { color: rgb(99, 37, 144); }
+    100% { color: violet; }
+}
+h4{
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 /* Existing styles */
 input, button {
   margin: 10px;
   padding: 8px;
   font-size: 16px;
+  width: 100%;
 }
 input{
-  max-width: 150px;
+  width: 100%;
+  margin: 0px;
+  border-radius: 8px;
+  border-color: #FF8882; /* Light pink coral for border */
 }
 .guessWrap{
   width: 100%;
@@ -157,6 +181,7 @@ input{
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
 }
 
 /* New styles for centering and background */
@@ -189,6 +214,7 @@ button:hover {
 }
 .guess {
   background-color: #429128;
+  width: fit-content;
 }
 .win {
   color: #2d4824;
@@ -207,6 +233,7 @@ th, td {
   padding: 12px;
   border-bottom: 1px solid #ccc; /* Light gray border for separation */
   text-align: left;
+  line-height: normal; /* Adjust line height for better visual spacing */
 }
 
 th {
@@ -217,11 +244,22 @@ th {
 tr:last-child td {
   border-bottom: none; /* Remove bottom border from the last row */
 }
-.digit{
+.digit {
+  display: inline-block;
   padding: 6px;
-  border: 1px solid #ccc;
+  margin-right: 5px; /* Space between digits and separators */
+  border: 1px solid #ccc; /* Optional: adds a border around each digit */
   border-radius: 5px;
   cursor: pointer;
+}
+.mbDigit{
+  margin-top: 10px;
+}
+
+/* Style adjustments for separators */
+span.separator {
+  display: inline-block; /* Treat separators like digits for consistent spacing */
+  padding-right: 5px; /* Space after the separator */
 }
 .correct {
   color: #429128; /* Green color for correct count */
@@ -230,6 +268,7 @@ tr:last-child td {
 .regen{
   margin: 0 auto;
   margin-top: 12px;
+  width: fit-content;
 }
 
 
