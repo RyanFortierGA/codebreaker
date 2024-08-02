@@ -4,9 +4,9 @@
     <h4>Enter a code length between 3 and 10</h4>
     <div class="codeWrap">
       <input type="number" v-model="codeLength" placeholder="length (3-10)" @change="generateCode" />
-      <div class="codeWrap">
-        <button class="reveal" @click="showCode = !showCode">{{ showCode ? 'Hide Code' : 'Reveal Code' }}</button>
-        <p v-if="showCode">Code: {{ code }}</p>
+      <div class="codeWrap" v-if="code">
+        <button class="reveal" @click="userGuess = code">{{ showCode ? 'Hide Code' : 'Reveal Code' }}</button>
+        <p v-if="showCode" class="win">{{ code }}</p>
       </div>
     </div>
     <div v-if="code">
