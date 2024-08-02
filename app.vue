@@ -55,6 +55,15 @@ export default {
       guessedCorrectly: false,
     };
   },
+  mounted() {
+    const gameState = JSON.parse(localStorage.getItem('gameState'));
+    console.log(gameState);
+    if (gameState) {
+      this.codeLength = gameState.codeLength;
+      this.code = gameState.code;
+      this.guesses = gameState.guesses;
+    }
+  },
   methods: {
     generateCode() {
       if (this.codeLength < 3 || this.codeLength > 10) {
@@ -80,9 +89,15 @@ export default {
       this.guesses.push({
         text: this.userGuess,
         correctCount: correctCount,
-        colors: Array(this.userGuess.length).fill('none') // Initialize colors as 'none'
-});
+        colors: Array(this.userGuess.length).fill('none') // Initialize colors as 'none'  
+      });
       this.userGuess = ''; // Reset guess input
+      const gameState = {
+        codeLength: this.codeLength,
+        code: this.code,
+        guesses: this.guesses
+      };
+      localStorage.setItem('gameState', JSON.stringify(gameState));
 
       // Check if all digits were guessed correctly
       if (correctCount === this.code.length) {
@@ -90,6 +105,7 @@ export default {
       }
     },
     regenerateCode() {
+      localStorage.removeItem('gameState'); // Clear saved game state
       this.showCode = false;
       this.generateCode();
       this.guesses = [];
