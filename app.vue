@@ -17,14 +17,14 @@
       </div>
       <ul v-if="guesses.length > 0">
         <li v-for="(guess, index) in guesses" :key="index">
-          {{ guess.text }} - Correct Numbers: {{ guess.correctCount }}
+          {{ guess.text }} - Correct Numbers: <span :class="guess.correctCount > 0 ? 'correct' : ''">{{ guess.correctCount }}</span>
         </li>
       </ul>
       <div v-if="guessedCorrectly">
        <p class="win">Congratulations! You got it in {{ guesses.length }} tries.</p>
       </div>
     </div>
-    <button v-if="code" @click="regenerateCode" class="regen">Regenerate Code</button>
+    <button v-if="code" @click="regenerateCode" class="regen">New Game</button>
   </div>
 </template>
 
@@ -158,5 +158,12 @@ button:hover {
   color: #2d4824;
   text-align: center;
 }
+/* .correct {
+  color: #fff;
+  background: #429128;
+  padding:8px 12px;
+  border-radius: 100%;
+  margin-left: 10px;
+} */
 
 </style>
