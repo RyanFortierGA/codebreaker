@@ -116,6 +116,12 @@ export default {
       let currentColorIndex = colors.indexOf(this.guesses[guessIndex].colors[digitIndex]);
       let nextColorIndex = (currentColorIndex + 1) % colors.length;
       this.guesses[guessIndex].colors[digitIndex] = colors[nextColorIndex];
+      const gameState = {
+        codeLength: this.codeLength,
+        code: this.code,
+        guesses: this.guesses
+      };
+      localStorage.setItem('gameState', JSON.stringify(gameState));
     }
   }
 }
