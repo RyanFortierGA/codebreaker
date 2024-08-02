@@ -15,11 +15,18 @@
         <input type="text" v-model="userGuess" placeholder="Enter guess" @keyup.enter="checkGuess" />
         <button class="guess" @click="checkGuess">Guess</button>
       </div>
-      <ul v-if="guesses.length > 0">
-        <li v-for="(guess, index) in guesses" :key="index">
-          {{ guess.text }} - Correct Numbers: <span :class="guess.correctCount > 0 ? 'correct' : ''">{{ guess.correctCount }}</span>
-        </li>
-      </ul>
+      <div v-if="guesses.length > 0">
+        <table>
+          <tr>
+            <th>Guess</th>
+            <th>Correct Numbers</th>
+          </tr>
+          <tr v-for="(guess, index) in guesses" :key="index">
+            <td>{{ guess.text }}</td>
+            <td :class="guess.correctCount > 0 ? 'correct' : ''">{{ guess.correctCount }}</td>
+          </tr>
+        </table>
+      </div>
       <div v-if="guessedCorrectly">
        <p class="win">Congratulations! You got it in {{ guesses.length }} tries.</p>
       </div>
@@ -98,6 +105,9 @@ input, button {
   padding: 8px;
   font-size: 16px;
 }
+input{
+  max-width: 150px;
+}
 .codeContainer{
   display: flex;
   align-items: center;
@@ -107,34 +117,19 @@ input, button {
   flex-direction: row;
   align-items: center;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-  border: 2px solid #FF8882; /* Light pink coral border */
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 20px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-li {
-  padding: 5px;
-  border-bottom: 1px solid #ccc; /* Light gray line for each guess */
-}
-
-li:last-child {
-  border-bottom: none; /* Remove bottom border from the last item */
-}
 
 /* New styles for centering and background */
 .container {
   background-color: #E0F7FA; /* Baby blue background */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   height: 100vh;
   overflow-x: hidden;
+  padding: 18px;
+  max-width: 500px;
+  margin: auto;
 }
 
 button {
@@ -158,12 +153,37 @@ button:hover {
   color: #2d4824;
   text-align: center;
 }
-/* .correct {
-  color: #fff;
-  background: #429128;
-  padding:8px 12px;
-  border-radius: 100%;
-  margin-left: 10px;
-} */
+/* Styles for the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff; /* White background for the table */
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ccc; /* Light gray border for separation */
+  text-align: left;
+}
+
+th {
+  background-color: #FF8882; /* Light pink coral for headers */
+  color: white;
+}
+
+tr:last-child td {
+  border-bottom: none; /* Remove bottom border from the last row */
+}
+
+.correct {
+  color: #429128; /* Green color for correct count */
+  font-weight: bold;
+}
+.regen{
+  margin: auto;
+}
+
 
 </style>
